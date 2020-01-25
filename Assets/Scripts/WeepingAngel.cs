@@ -64,6 +64,11 @@ public class WeepingAngel : MonoBehaviour, IGazeFocusable
 
     private void StepForward()
     {
+        if ((_playerCamera.transform.position - transform.position).sqrMagnitude < 1f)
+        {
+            Debug.Log("You're dead");
+            return;
+        }
         Vector3 toPlayer = (_playerCamera.transform.position - transform.position).normalized;
         transform.position += toPlayer * _stepSize;
 
