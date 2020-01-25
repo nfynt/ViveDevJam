@@ -72,6 +72,12 @@ public class CSharpSerial : MonoBehaviour {
 
     }
 
+    //public void M_SetCommandToDevice(string cmd)
+    //{
+    //    //if (Input.GetKeyDown(KeyCode.Space))
+    //        SendCommandToDevice(cmd);
+    //}
+
     // Update is called once per frame
     void Update() {
         
@@ -80,19 +86,18 @@ public class CSharpSerial : MonoBehaviour {
         ReadingQueues();
 
         // check if vibration queues are overloaded.
-        CheckVibrationQueuess();
+        // CheckVibrationQueuess();
 
-        // check if we send vibration to left hand.
-        if ( sendVibrationToLeft) {
-            SendVibrationCommand( "left" );
+        //// check if we send vibration to left hand.
+        if (sendVibrationToLeft)
+        {
+            SendVibrationCommand("left");
         }
 
-        //if(Input.GetKeyDown(KeyCode.Space))
-        //    SendCommandToDevice(boom);
-
         // check if we send vibration to right hand.
-        if ( sendVibrationToRight ) {
-            SendVibrationCommand( "right" );
+        if (sendVibrationToRight)
+        {
+            SendVibrationCommand("right");
         }
 
         // check ports status.
@@ -450,7 +455,7 @@ public class CSharpSerial : MonoBehaviour {
     /// </summary>
     /// <param name="hand">string - to which hand the vibration command is being sent</param>
     /// <returns>void</returns>
-    private void SendVibrationCommand( string hand ) {
+    public void SendVibrationCommand( string hand ) {
         
         // commannd for the left hand device.
         if ( hand == "left" ) {

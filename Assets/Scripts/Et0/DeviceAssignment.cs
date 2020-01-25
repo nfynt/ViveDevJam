@@ -11,7 +11,6 @@ public class DeviceAssignment : MonoBehaviour
 
     private void OnEnable()
     {
-
         SteamVR_Events.DeviceConnected.Listen(new UnityEngine.Events.UnityAction<int, bool>(OnDeviceConnected));
     }
 

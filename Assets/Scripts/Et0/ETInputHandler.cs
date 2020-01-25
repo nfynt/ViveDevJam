@@ -6,6 +6,7 @@ public class ETInputHandler : MonoBehaviour
 {
 	public Camera mainCam;
 	[Header("Etee API")]
+	public CSharpSerial eteeCSharp;
 	public eteeDevice leftDevice;
 	public eteeDevice rightDevice;
 
@@ -23,6 +24,11 @@ public class ETInputHandler : MonoBehaviour
 	private float chargedAmt = 0;
 	private bool readyToShoot;
 	private float shooterHot;
+
+	private void Start()
+	{
+		//eteeCSharp.sendCommandToDe
+	}
 
 	private void Update()
 	{
@@ -48,19 +54,35 @@ public class ETInputHandler : MonoBehaviour
 			shooterHot = coolTime;
 		}
 
-		if (shooterHot<=0 && IsSqueezed())
+		if (shooterHot <= 0 && IsSqueezed())
 		{
-			chargingShoot = true;
 			if (chargedAmt < shootcharge)
+			{
 				chargedAmt += shootChargeRate;
+				if (!chargingShoot)
+				{
+					shooter.Charging(!chargeToLeft);
+					//if (chargeToLeft)
+					//	eteeCSharp.SendVibrationCommand("left");
+					//else
+					//	eteeCSharp.SendVibrationCommand("right");
+				}
+			}
 			else
 				readyToShoot = true;
+			chargingShoot = true;
 		}
-		else if (shooterHot<=0 && chargingShoot) { chargingShoot = false; chargedAmt = 0f; }
-		else if(shooterHot>0){ shooterHot -= Time.deltaTime; }
+		else if (shooterHot <= 0 && chargingShoot)
+		{
+			chargingShoot = false; chargedAmt = 0f; shooter.ResetCharge();
 
+			//if (chargeToLeft)
+			//	eteeCSharp.SendVibrationCommand("left");
+			//else
+			//	eteeCSharp.SendVibrationCommand("right");
+		}
+		else if (shooterHot > 0) { shooterHot -= Time.deltaTime; }
 
-		
 	}
 
 	Vector2 MoveDirection()
