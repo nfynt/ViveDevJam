@@ -25,6 +25,8 @@ public class DoorManager : MonoBehaviour
         }
         if (timeLeft > times[timeIndex])
         {
+      
+            GetComponent<AudioSource>().Play();
             GameObject gate = gates[timeIndex];
             gate.SetActive(false);
             timeIndex += 1;
