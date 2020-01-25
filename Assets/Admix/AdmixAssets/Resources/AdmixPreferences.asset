@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: -253376139, guid: cbd5c1b024efd7941b1096da1996a5f5, type: 3}
   m_Name: AdmixPreferences
   m_EditorClassIdentifier: 
-  ApplicationName: 
-  ApplicationIdentifier: 
-  _applicationToken: 
+  ApplicationName: ViveDevJam
+  ApplicationIdentifier: 1781c057-be84-495b-bddb-e1dde3c7ca00
+  _applicationToken: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmZhV1FpT2lJeE56Z3hZekExTnkxaVpUZzBMVFE1TldJdFltUmtZaTFsTVdSa1pUTmpOMk5oTURBaUxDSjFjMlZ5U1dRaU9pSm1NRGRtTm1VMlpTMHdZVE0wTFRRMFpXRXRPVGsyWVMwNFpXRmpOV1EzT0dVNVkyTWlMQ0poY0hCRmJtZHBibVVpT2lKVmJtbDBlU0lzSW1saGRDSTZNVFUzT1RrM09EZzBObjAuZEt3aXVDbWkxWFllcUtBaUR1N2tZdU0tRjF0WExwRmtfMzVUdm55RmJUMA==
   _logBehaviour: 2
   SceneIdentifiersManager:
-    SceneStructsList: []
+    SceneStructsList:
+    - _sceneName: Outdoor Stage
+      _sceneIdentifier: 6458105f-49ce-4bf0-90e3-67f10cd57dab
+      _scenePath: Assets/Sci-Fi Environment  (Legacy)/Scenes/Outdoor Stage.unity
+      _applicationName: ViveDevJam
   SimRequestLimit: 1
