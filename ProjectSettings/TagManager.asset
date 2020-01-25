@@ -8,6 +8,7 @@ TagManager:
   - rightHand
   - rightHandModel
   - Enemy
+  - Admix
   layers:
   - Default
   - TransparentFX
