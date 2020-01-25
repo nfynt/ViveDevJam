@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GazeDot : MonoBehaviour
 {
+    public Ray GazeRay { get; private set; }
+
     // Max. distance of gaze ray
     [SerializeField]
     private float _gazeRange = 500f;
@@ -66,6 +68,8 @@ public class GazeDot : MonoBehaviour
         dotPos /= _numFramesToSample;
         transform.position = dotPos - (0.1f * ray.Direction);
         transform.rotation = Quaternion.LookRotation(_player.forward, _player.up);
+
+        GazeRay = new Ray(ray.Origin, (transform.position - ray.Origin).normalized);
 
     }
 
