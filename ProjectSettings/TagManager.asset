@@ -9,6 +9,9 @@ TagManager:
   - rightHandModel
   - Enemy
   - Admix
+  - Blue
+  - Green
+  - Hands
   layers:
   - Default
   - TransparentFX

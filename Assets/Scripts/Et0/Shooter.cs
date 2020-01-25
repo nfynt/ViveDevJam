@@ -8,6 +8,9 @@ public class Shooter : MonoBehaviour
     public Transform leftHand;
     public Transform rightHand;
     public float force = 10;
+    public Color normalColor = Color.white;
+    public Color chargingColor = Color.blue;
+    public Color hotColor = Color.red;
 
     private GameObject bullObj;
     private Transform parentHand;
@@ -25,10 +28,12 @@ public class Shooter : MonoBehaviour
             parentHand = rightHand;
             bullObj.transform.position = rightHand.position + rightHand.forward;
         }
+        parentHand.GetChild(0).GetComponent<Renderer>().material.color = chargingColor;
     }
 
     public void ResetCharge()
     {
+        parentHand.GetChild(0).GetComponent<Renderer>().material.color = normalColor;
         if (bullObj != null)
             Destroy(bullObj);
     }
@@ -41,5 +46,6 @@ public class Shooter : MonoBehaviour
         bullObj.transform.parent = null;
         bullObj.GetComponent<Rigidbody>().AddForce(direction * force);
         bullObj.GetComponentInChildren<Collider>().enabled = true;
+        parentHand.GetChild(0).GetComponent<Renderer>().material.color = hotColor;
     }
 }

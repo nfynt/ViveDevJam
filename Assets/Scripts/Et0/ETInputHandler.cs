@@ -1,10 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ETInputHandler : MonoBehaviour
 {
+	public static ETInputHandler Instance;
+
+	public delegate void Grabbed(bool isLeft, bool isRight);
+	public delegate void Released(bool isLeft, bool isRight);
+	public static event Grabbed Grab;
+	public static event Grabbed Release;
+
 	public Camera mainCam;
+	public Transform leftHand;
+	public Transform rightHand;
 	[Header("Etee API")]
 	public CSharpSerial eteeCSharp;
 	public eteeDevice leftDevice;
@@ -25,6 +35,24 @@ public class ETInputHandler : MonoBehaviour
 	private bool readyToShoot;
 	private float shooterHot;
 
+	public bool handEngaged;
+	private bool grabEventRaised=false;
+
+	public Transform GetRightHand
+	{
+		get { return rightHand; }
+	}
+
+	public Transform GetLeftHand
+	{
+		get { return leftHand; }
+	}
+
+	private void Awake()
+	{
+		Instance = this;
+	}
+
 	private void Start()
 	{
 		//eteeCSharp.sendCommandToDe
@@ -42,7 +70,7 @@ public class ETInputHandler : MonoBehaviour
 			transform.Translate(pos);
 		}
 
-		if(readyToShoot && PointShoot())
+		if(!handEngaged && readyToShoot && PointShoot())
 		{
 			Debug.Log("Shoooot!");
 			if (chargeToLeft)
@@ -54,35 +82,50 @@ public class ETInputHandler : MonoBehaviour
 			shooterHot = coolTime;
 		}
 
-		if (shooterHot <= 0 && IsSqueezed())
+		if (!handEngaged)
 		{
-			if (chargedAmt < shootcharge)
+			if (shooterHot <= 0 && IsSqueezed())
 			{
-				chargedAmt += shootChargeRate;
-				if (!chargingShoot)
+				if (chargedAmt < shootcharge)
 				{
-					shooter.Charging(!chargeToLeft);
-					//if (chargeToLeft)
-					//	eteeCSharp.SendVibrationCommand("left");
-					//else
-					//	eteeCSharp.SendVibrationCommand("right");
+					chargedAmt += shootChargeRate;
+					if (!chargingShoot)
+					{
+						shooter.Charging(!chargeToLeft);
+						//if (chargeToLeft)
+						//	eteeCSharp.SendVibrationCommand("left");
+						//else
+						//	eteeCSharp.SendVibrationCommand("right");
+					}
 				}
+				else
+					readyToShoot = true;
+				chargingShoot = true;
 			}
-			else
-				readyToShoot = true;
-			chargingShoot = true;
+			else if (shooterHot <= 0 && chargingShoot)
+			{
+				chargingShoot = false; chargedAmt = 0f; shooter.ResetCharge();
+
+				//if (chargeToLeft)
+				//	eteeCSharp.SendVibrationCommand("left");
+				//else
+				//	eteeCSharp.SendVibrationCommand("right");
+			}
+			else if (shooterHot > 0) { shooterHot -= Time.deltaTime; }
 		}
-		else if (shooterHot <= 0 && chargingShoot)
+		else
 		{
-			chargingShoot = false; chargedAmt = 0f; shooter.ResetCharge();
-
-			//if (chargeToLeft)
-			//	eteeCSharp.SendVibrationCommand("left");
-			//else
-			//	eteeCSharp.SendVibrationCommand("right");
+			if (!grabEventRaised && (leftDevice.squeeze || rightDevice.squeeze))
+			{
+				Grab.Invoke(leftDevice.squeeze, rightDevice.squeeze);
+				grabEventRaised = true;
+			}
+			else if (grabEventRaised && !leftDevice.squeeze && !rightDevice.squeeze)
+			{
+				grabEventRaised = false;
+				Release.Invoke(leftDevice.squeeze, rightDevice.squeeze);
+			}
 		}
-		else if (shooterHot > 0) { shooterHot -= Time.deltaTime; }
-
 	}
 
 	Vector2 MoveDirection()
