@@ -59,6 +59,8 @@ public class CSharpSerial : MonoBehaviour {
     private string gamepadCommand = "AT+GA";
     private string eteeCommand = "AT+NA";
 
+    private string boom = "BP+VRL=88";
+
     // new etee API objects.
     public eteeDevice leftDevice;                                   // etee api left device.
     public eteeDevice rightDevice;                                  // etee api right device.
@@ -67,6 +69,7 @@ public class CSharpSerial : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         Init();   
+
     }
 
     // Update is called once per frame
@@ -80,9 +83,12 @@ public class CSharpSerial : MonoBehaviour {
         CheckVibrationQueuess();
 
         // check if we send vibration to left hand.
-        if ( sendVibrationToLeft ) {
+        if ( sendVibrationToLeft) {
             SendVibrationCommand( "left" );
         }
+
+        //if(Input.GetKeyDown(KeyCode.Space))
+        //    SendCommandToDevice(boom);
 
         // check if we send vibration to right hand.
         if ( sendVibrationToRight ) {

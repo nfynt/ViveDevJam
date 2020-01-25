@@ -5,12 +5,15 @@ using UnityEngine;
 public class ETInputHandler : MonoBehaviour
 {
 	public Camera mainCam;
-	//public Transform leftHand;
-	//public Transform rightHand;
+	[Header("Etee API")]
 	public eteeDevice leftDevice;
 	public eteeDevice rightDevice;
+
+	[Header("Player props")]
 	public float moveSpeed = 1f;
 
+	[Header("Shoot params")]
+	public Shooter shooter;
 	public float shootcharge = 100;
 	public float shootChargeRate = 0.5f;
 	public float coolTime = 2f;
@@ -36,6 +39,10 @@ public class ETInputHandler : MonoBehaviour
 		if(readyToShoot && PointShoot())
 		{
 			Debug.Log("Shoooot!");
+			if (chargeToLeft)
+				shooter.Shoot(rightDevice.transform.forward);
+			else
+				shooter.Shoot(leftDevice.transform.forward);
 			readyToShoot = false;
 			chargedAmt = 0;
 			shooterHot = coolTime;
