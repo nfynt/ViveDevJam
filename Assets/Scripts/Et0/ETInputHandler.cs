@@ -4,66 +4,84 @@ using UnityEngine;
 
 public class ETInputHandler : MonoBehaviour
 {
-    public Camera mainCam;
-    public eteeDevice leftDevice;
-    public eteeDevice rightDevice;
-    public float moveSpeed = 1f;
+	public Camera mainCam;
+	//public Transform leftHand;
+	//public Transform rightHand;
+	public eteeDevice leftDevice;
+	public eteeDevice rightDevice;
+	public float moveSpeed = 1f;
 
-    public float shootcharge = 100;
-    public float shootChargeRate = 0.5f;
-    private float chargedAmt = 0;
-    private bool readyToShoot;
-    private bool chargingShoot;
+	public float shootcharge = 100;
+	public float shootChargeRate = 0.5f;
+	public float coolTime = 2f;
+	private bool chargeToLeft;
+	private bool chargeToRight;
+	private bool chargingShoot;
+	private float chargedAmt = 0;
+	private bool readyToShoot;
+	private float shooterHot;
 
-    private void Update()
-    {
-        Vector2 move = MoveDirection();
-        move.Normalize();
-        if(move.sqrMagnitude>0)
-        {
-            //Move
-            Vector3 pos = (mainCam.transform.right * move.x + mainCam.transform.forward * move.y) * moveSpeed * Time.deltaTime;
-            pos.y = transform.position.y;
-            transform.Translate(pos);
-        }
+	private void Update()
+	{
+		Vector2 move = MoveDirection();
+		move.Normalize();
+		if(move.sqrMagnitude>0)
+		{
+			//Move
+			Vector3 pos = (mainCam.transform.right * move.x + mainCam.transform.forward * move.y) * moveSpeed * Time.deltaTime;
+			pos.y = transform.position.y;
+			transform.Translate(pos);
+		}
 
-        if(readyToShoot && PointShoot())
-        {
-            Debug.Log("Shoooot!");
-            readyToShoot = false;
-            chargedAmt = 0;
-        }
+		if(readyToShoot && PointShoot())
+		{
+			Debug.Log("Shoooot!");
+			readyToShoot = false;
+			chargedAmt = 0;
+			shooterHot = coolTime;
+		}
 
-        if (IsSqueezed())
-        {
-            chargingShoot = true;
-            if (chargedAmt < shootcharge)
-                chargedAmt += shootChargeRate;
-            else
-                readyToShoot = true;
-        }
-        else if (chargingShoot) { chargingShoot = false; chargedAmt = 0f; }
+		if (shooterHot<=0 && IsSqueezed())
+		{
+			chargingShoot = true;
+			if (chargedAmt < shootcharge)
+				chargedAmt += shootChargeRate;
+			else
+				readyToShoot = true;
+		}
+		else if (shooterHot<=0 && chargingShoot) { chargingShoot = false; chargedAmt = 0f; }
+		else if(shooterHot>0){ shooterHot -= Time.deltaTime; }
 
 
-        
-    }
+		
+	}
 
-    Vector2 MoveDirection()
-    {
-        Vector2 leftCoord = leftDevice.trackPadCoordinates;
-        if (leftCoord.sqrMagnitude > 0)
-            return leftCoord;
+	Vector2 MoveDirection()
+	{
+		Vector2 leftCoord = leftDevice.trackPadCoordinates;
+		if (leftCoord.sqrMagnitude > 0)
+			return leftCoord;
 
-        return rightDevice.trackPadCoordinates;
-    }
+		return rightDevice.trackPadCoordinates;
+	}
 
-    bool PointShoot()
-    {
-        return leftDevice.point || rightDevice.point;
-    }
+	bool PointShoot()
+	{
+		if (chargeToLeft && rightDevice.ring < 30) return true;
+		else if (chargeToRight && leftDevice.ring < 30) return true;
 
-    bool IsSqueezed()
-    {
-        return leftDevice.squeeze || rightDevice.squeeze;
-    }
+		return false;
+		//return leftDevice.point || rightDevice.point;
+	}
+
+	bool IsSqueezed()
+	{
+		if (leftDevice.squeeze) chargeToLeft = true;
+		else chargeToLeft = false;
+
+		if (!chargeToLeft && rightDevice.squeeze) chargeToRight = true;
+		else if (!rightDevice.squeeze) chargeToRight = false;
+
+		return leftDevice.squeeze || rightDevice.squeeze;
+	}
 }
