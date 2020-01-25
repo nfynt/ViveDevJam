@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 1566008119, guid: abf3c058d94959640bec02372a894b38, type: 3}
   m_Name: AdmixEditorPreferences
   m_EditorClassIdentifier: 
-  ApplicationsList:
-  - ViveDevJam
-  _accessToken: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmZhV1FpT2lKbU1EZG1ObVUyWlMwd1lUTTBMVFEwWldFdE9UazJZUzA0WldGak5XUTNPR1U1WTJNaUxDSmxlSEFpT2pFMU9EQTFOVEF5T0RJc0ltbGhkQ0k2TVRVM09UazFNREk0TW4wLklFR2NNeG03cUtmdGlWV2ZodlY3UHNPMU8tWmRhNXFYUGpMSEVlQzlMT0E=
-  _userLogin: immanuel.baskaran.16@ucl.ac.uk
-  _profileStatus: 1000
+  ApplicationsList: []
+  _accessToken: 
+  _userLogin: 
+  _profileStatus: 0
