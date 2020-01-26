@@ -18,7 +18,7 @@ public class DoorManager : MonoBehaviour
     void Update()
     {
         timeLeft += Time.deltaTime;
-        Debug.Log(Mathf.Round(timeLeft));
+        //Debug.Log(Mathf.Round(timeLeft));
         if (timeIndex == times.Length)
         {
             return;

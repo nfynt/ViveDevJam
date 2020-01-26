@@ -44,6 +44,7 @@ public class Shooter : MonoBehaviour
         bullObj.GetComponent<Rigidbody>().isKinematic = false;
         direction = parentHand.forward;
         bullObj.transform.parent = null;
+        bullObj.GetComponent<BulletObject>().Shoot();
         bullObj.GetComponent<Rigidbody>().AddForce(direction * force);
         bullObj.GetComponentInChildren<Collider>().enabled = true;
         parentHand.GetChild(0).GetComponent<Renderer>().material.color = hotColor;

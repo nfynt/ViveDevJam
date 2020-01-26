@@ -9,17 +9,17 @@ public class GrabableObject : MonoBehaviour
     public Color grabColor = Color.blue;
     public Color normalColor = Color.white;
     public float amplifyThrowSpeed = 150f;
+    public MeshRenderer renderer;
     private bool leftGrab;
     private bool rightGrab;
     private Rigidbody rigidBody;
-    private MeshRenderer renderer;
     private bool grabbed;
     private Vector3 lastPos;
 
     private void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
-        renderer = GetComponent<MeshRenderer>();
+        //renderer = GetComponent<MeshRenderer>();
     }
 
     private void OnEnable()
