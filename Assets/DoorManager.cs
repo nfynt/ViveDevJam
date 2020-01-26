@@ -13,24 +13,35 @@ public class DoorManager : MonoBehaviour
 
     private float timeLeft = 0;
 
+    private volatile bool countdown;
+
+
+    public void startCountDown()
+    {
+        countdown = true;
+    }
 
 
     void Update()
     {
-        timeLeft += Time.deltaTime;
-        //Debug.Log(Mathf.Round(timeLeft));
-        if (timeIndex == times.Length)
+        if (countdown)
         {
-            return;
-        }
-        if (timeLeft > times[timeIndex])
-        {
-      
-            GetComponent<AudioSource>().Play();
-            GameObject gate = gates[timeIndex];
-            gate.SetActive(false);
-            timeIndex += 1;
-            timeLeft = 0;
+            timeLeft += Time.deltaTime;
+            //Debug.Log(Mathf.Round(timeLeft));
+            if (timeIndex == times.Length)
+            {
+                return;
+            }
+            if (timeLeft > times[timeIndex])
+            {
+
+                GetComponent<AudioSource>().Play();
+                GameObject gate = gates[timeIndex];
+                gate.SetActive(false);
+                countdown = false;
+                timeIndex += 1;
+                timeLeft = 0;
+            }
         }
     }
 
