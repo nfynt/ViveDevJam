@@ -48,22 +48,33 @@ public class BulletObject : MonoBehaviour
     {
         if(explode)
         {
-            if (collision.gameObject.GetComponent<Rigidbody>() != null)
-                collision.gameObject.GetComponent<Rigidbody>().AddForce((collision.transform.position - transform.position)*explosionForce);
+            if (collision.gameObject.name == "PlaySpace") return;
+
+            Debug.Log("forcing: " + collision.gameObject.name);
+
+            if (collision.gameObject.GetComponent<Rigidbody>() != null && !(collision.gameObject.CompareTag("MainCamera") ||collision.gameObject.CompareTag("Player")))
+            {
+                Debug.Log(collision.gameObject.name);
+                collision.gameObject.GetComponent<Rigidbody>().AddForce((collision.transform.position - transform.position) * explosionForce);
+            }
             
             return;
         }
-        if(collision.gameObject.CompareTag("Enemy"))
+        if(collision.gameObject.CompareTag("Enemy") && collision.gameObject.GetComponent<EnemyPlayer>()!=null)
         {
             collision.gameObject.GetComponent<EnemyPlayer>().DealDamage(damage);
         }
+        if (collision.gameObject.CompareTag("bgate"))
+            collision.transform.parent.gameObject.SetActive(false);
         Destroy();
     }
 
     private void Destroy()
     {
         explosion.SetActive(true);
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        //GetComponent<Rigidbody>().velocity = Vector3.zero;
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponentInChildren<MeshRenderer>().enabled = false;
         explode = true;
         //Destroy(this.gameObject);
     }

@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Sci-Fi Environment  (Legacy)/Scenes/Outdoor Stage.unity
+    guid: a8c9c0be5119943088e383e8af3d72dd
   m_configObjects: {}

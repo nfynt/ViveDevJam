@@ -13,6 +13,7 @@ TagManager:
   - Green
   - Hands
   - Drum
+  - bgate
   layers:
   - Default
   - TransparentFX
@@ -22,8 +23,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - PlayerCamera
+  - Bullet
   - 
   - 
   - 

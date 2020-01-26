@@ -25,6 +25,8 @@ public class ETInputHandler : MonoBehaviour
 	[Header("Player props")]
 	public float moveSpeed = 1f;
 
+	public bool enableShooter;
+
 	[Header("Shoot params")]
 	public Shooter shooter;
 	public float shootcharge = 100;
@@ -60,6 +62,7 @@ public class ETInputHandler : MonoBehaviour
 	{
 		//eteeCSharp.sendCommandToDe
 		startPos = transform.position;
+		enableShooter = false;
 	}
 
 	public void ResetPlayerPosition()
@@ -73,12 +76,19 @@ public class ETInputHandler : MonoBehaviour
 	{
 		Vector2 move = MoveDirection();
 		move.Normalize();
-		if(move.sqrMagnitude>0)
+		if (move.sqrMagnitude>0)
 		{
 			//Move
 			Vector3 pos = (mainCam.transform.right * move.x + mainCam.transform.forward * move.y) * moveSpeed * Time.deltaTime;
-			pos.y = transform.position.y;
-			transform.Translate(pos);
+			//pos.y = transform.position.y;
+			pos.y = 0;
+			//transform.Translate(pos);
+			//Debug.Log(pos.ToString()+";"+move.ToString());
+			GetComponent<Rigidbody>().velocity = pos;
+		}
+		else
+		{
+			GetComponent<Rigidbody>().velocity = Vector3.zero;
 		}
 
 		if(!handEngaged && readyToShoot && PointShoot())
@@ -93,7 +103,9 @@ public class ETInputHandler : MonoBehaviour
 			shooterHot = coolTime;
 		}
 
-		if (!handEngaged)
+		//if (!enableShooter) return;
+
+		if (!handEngaged && enableShooter)
 		{
 			if (shooterHot <= 0 && IsSqueezed())
 			{

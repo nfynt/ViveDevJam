@@ -48,12 +48,6 @@ public class GazeDot : MonoBehaviour
                 if (hit.collider.gameObject.GetComponent<WeepingAngelEffect>() != null)
                     hit.collider.gameObject.GetComponent<WeepingAngelEffect>().ToggleEyeColor(true);
             }
-            if (hit.collider.tag == "Drum")
-            {
-                sprite.enabled = true;
-                if (hit.collider.gameObject.GetComponent<AudioSource>() != null)
-                    hit.collider.gameObject.GetComponent<AudioSource>().Play();
-            }
             else
                 sprite.enabled = false;
         }

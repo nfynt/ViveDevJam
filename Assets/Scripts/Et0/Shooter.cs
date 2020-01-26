@@ -8,32 +8,36 @@ public class Shooter : MonoBehaviour
     public Transform leftHand;
     public Transform rightHand;
     public float force = 10;
+    public MeshRenderer renderer;
     public Color normalColor = Color.white;
     public Color chargingColor = Color.blue;
     public Color hotColor = Color.red;
 
     private GameObject bullObj;
     private Transform parentHand;
+    private bool isleft;
     public void Charging(bool parentLeft)
     {
         if (parentLeft)
         {
             bullObj = Instantiate(firePrefab, leftHand);
             parentHand = leftHand;
-            bullObj.transform.position = leftHand.position + leftHand.forward;
+            bullObj.transform.localPosition = new Vector3(0.15f, 0f, 0);//leftHand.right;
+            isleft = true;
         }
         else
         {
             bullObj = Instantiate(firePrefab, rightHand);
             parentHand = rightHand;
-            bullObj.transform.position = rightHand.position + rightHand.forward;
+            bullObj.transform.localPosition = new Vector3(-0.15f, 0f, 0); //rightHand.right;
+            isleft = false;
         }
-        parentHand.GetChild(0).GetComponent<Renderer>().material.color = chargingColor;
+        parentHand.GetChild(0).GetChild(0).GetComponentInChildren<Renderer>().material.color = chargingColor;
     }
 
     public void ResetCharge()
     {
-        parentHand.GetChild(0).GetComponent<Renderer>().material.color = normalColor;
+        parentHand.GetChild(0).GetChild(0).GetComponentInChildren<Renderer>().material.color = normalColor;
         if (bullObj != null)
             Destroy(bullObj);
     }
@@ -42,11 +46,14 @@ public class Shooter : MonoBehaviour
     {
         if (bullObj == null) return;
         bullObj.GetComponent<Rigidbody>().isKinematic = false;
-        direction = parentHand.forward;
+        if (isleft)
+            direction = parentHand.forward;
+        else
+            direction = parentHand.forward;
         bullObj.transform.parent = null;
         bullObj.GetComponent<BulletObject>().Shoot();
         bullObj.GetComponent<Rigidbody>().AddForce(direction * force);
         bullObj.GetComponentInChildren<Collider>().enabled = true;
-        parentHand.GetChild(0).GetComponent<Renderer>().material.color = hotColor;
+        parentHand.GetChild(0).GetChild(0).GetComponentInChildren<Renderer>().material.color = hotColor;
     }
 }
