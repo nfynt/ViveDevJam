@@ -6,7 +6,7 @@ using UnityEngine;
 public class GazeDot : MonoBehaviour
 {
     public Ray GazeRay { get; private set; }
-
+    public SpriteRenderer sprite;
     // Max. distance of gaze ray
     [SerializeField]
     private float _gazeRange = 500f;
@@ -28,6 +28,7 @@ public class GazeDot : MonoBehaviour
 
     private void Awake()
     {
+        sprite.enabled = false;
         _player = Camera.main.transform;
         _sampledPoints = new Vector3[_numFramesToSample];
     }
@@ -41,11 +42,20 @@ public class GazeDot : MonoBehaviour
         if (Physics.Raycast(ray.Origin, ray.Direction, out RaycastHit hit))
         {
             hitPos = hit.point;
+            if (hit.collider.tag == "Enemy")
+            {
+                sprite.enabled = true;
+                if (hit.collider.gameObject.GetComponent<WeepingAngelEffect>() != null)
+                    hit.collider.gameObject.GetComponent<WeepingAngelEffect>().ToggleEyeColor(true);
+            }
+            else
+                sprite.enabled = false;
         }
         else
         {
             Debug.Log("Looking outside range");
             hitPos = ray.Direction * _gazeRange;
+            sprite.enabled = false;
         }
 
         _sampledPoints[_frameIndex] = hitPos;

@@ -9,8 +9,10 @@ public class ETInputHandler : MonoBehaviour
 
 	public delegate void Grabbed(bool isLeft, bool isRight);
 	public delegate void Released(bool isLeft, bool isRight);
+	public delegate void PlayerDied();
 	public static event Grabbed Grab;
 	public static event Grabbed Release;
+	public static event PlayerDied playerDied;
 
 	public Camera mainCam;
 	public Transform leftHand;
@@ -37,6 +39,7 @@ public class ETInputHandler : MonoBehaviour
 
 	public bool handEngaged;
 	private bool grabEventRaised=false;
+	private Vector3 startPos;
 
 	public Transform GetRightHand
 	{
@@ -56,6 +59,14 @@ public class ETInputHandler : MonoBehaviour
 	private void Start()
 	{
 		//eteeCSharp.sendCommandToDe
+		startPos = transform.position;
+	}
+
+	public void ResetPlayerPosition()
+	{
+		if (playerDied != null)
+			playerDied.Invoke();
+		transform.position = startPos;
 	}
 
 	private void Update()
