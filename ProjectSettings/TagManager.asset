@@ -3,7 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - leftHand
+  - rightHand
+  - rightHandModel
+  - Enemy
+  - Admix
+  - Blue
+  - Green
+  - Hands
+  - Drum
+  - bgate
   layers:
   - Default
   - TransparentFX
@@ -13,8 +23,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - PlayerCamera
+  - Bullet
   - 
   - 
   - 
